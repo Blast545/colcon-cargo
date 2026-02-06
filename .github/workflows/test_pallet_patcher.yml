@@ -46,6 +46,7 @@ jobs:
         run: |
           sudo apt-get install librust-serde-dev librust-tokio-dev librust-crc32fast-dev
           dpkg -L librust-tokio-dev
+          pallet-patcher --output-format toml $GITHUB_WORKSPACE/root/test/pallet_patcher_ws/deps/tokio-1.49.0/Cargo.toml $GITHUB_WORKSPACE/root/test/pallet_patcher_ws/deps
 
       - name: colcon build example project with a tokio crate available in workspace_ws/deps
         run: |
