@@ -82,7 +82,7 @@ class CargoBuildTask(TaskExtensionPoint):
         if "/deps" in str(base_path.parent):
             ws_crates_paths = [base_path.parent.parent / Path("deps")]
         else:
-            ws_crates_paths = [base_path.parent.parent / Path("deps")]
+            ws_crates_paths = [base_path.parent / Path("deps")]
 
         system_crates_paths = [Path("/usr/share/cargo/registry/")]
         manifest_path = base_path / Path("Cargo.toml")
