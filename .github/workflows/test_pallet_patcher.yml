@@ -45,6 +45,7 @@ jobs:
       - name: Install some Rust system crates
         run: |
           sudo apt-get install librust-serde-dev librust-tokio-dev librust-crc32fast-dev
+          dpkg -L librust-tokio-dev
 
       - name: colcon build example project with a tokio crate available in workspace_ws/deps
         run: |
