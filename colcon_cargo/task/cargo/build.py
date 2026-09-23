@@ -78,20 +78,14 @@ class CargoBuildTask(TaskExtensionPoint):
 
         ###### Run pallet-patcher to fetch anything available in colcon's workspace
         ###### or in our system dependencies:
-        base_path = Path(args.path)
+        base_path = [Path(args.path)]
+        system_crates_path = Path("/usr/share/cargo/registry/")
+        ws_crates_paths = base_path + [system_crates_path]
 
-        # TO-DO: How I get this to be the path where colcon is being run? workspace root
-        if "/deps" in str(base_path.parent):
-            ws_crates_paths = [base_path.parent.parent / Path("deps")]
-        else:
-            ws_crates_paths = [base_path.parent / Path("deps")]
-
-        system_crates_paths = [Path("/usr/share/cargo/registry/")]
         manifest_path = base_path / Path("Cargo.toml")
-        logger.info("Searching for local crates in '{ws_crates_paths}'".format_map(locals()))
-        logger.info("Searching for system crates in '{system_crates_paths}'".format_map(locals()))
+        logger.info("Searching for crates in '{ws_crates_paths}'".format_map(locals()))
         logger.info("Searching for metadata in '{manifest_path}'".format_map(locals()))
-        composition = load_and_compose(manifest_path, ws_crates_paths, system_crates_paths)
+        composition = load_and_compose(manifest_path, ws_crates_paths)
         crates_available_locally = get_cargo_arguments(composition)
         logger.info("Extra crates:" + str(crates_available_locally))
 
