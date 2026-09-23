@@ -14,7 +14,6 @@ from colcon_core.task import create_file
 from colcon_core.task import install
 from colcon_core.task import run
 from colcon_core.task import TaskExtensionPoint
-
 from pallet_patcher.command import load_and_compose
 from pallet_patcher.search import get_cargo_arguments
 
@@ -76,18 +75,18 @@ class CargoBuildTask(TaskExtensionPoint):
         # Get package metadata
         metadata = await self._get_metadata(env)
 
-        ###### Run pallet-patcher to fetch anything available in colcon's workspace
-        ###### or in our system dependencies:
-        base_path = [Path(args.path)]
-        system_crates_path = Path("/usr/share/cargo/registry/")
-        ws_crates_paths = base_path.append(system_crates_path)
+        # Run pallet-patcher to fetch anything available in colcon's workspace
+        # or in our system dependencies:
+        base_path = Path(args.path)
+        system_crates_path = Path('/usr/share/cargo/registry/')
+        ws_crates_paths = [base_path, system_crates_path]
 
-        manifest_path = base_path / Path("Cargo.toml")
-        logger.info("Searching for crates in '{ws_crates_paths}'".format_map(locals()))
-        logger.info("Searching for metadata in '{manifest_path}'".format_map(locals()))
+        manifest_path = base_path / Path('Cargo.toml')
+        logger.info("Search crates: '{ws_crates_paths}'".format_map(locals()))
+        logger.info("Search metadata: '{manifest_path}'".format_map(locals()))
         composition = load_and_compose(manifest_path, ws_crates_paths)
         crates_available_locally = get_cargo_arguments(composition)
-        logger.info("Extra crates:" + str(crates_available_locally))
+        logger.info('Extra crates:' + str(crates_available_locally))
 
         cargo_args = args.cargo_args
         if cargo_args is None:
@@ -148,7 +147,7 @@ class CargoBuildTask(TaskExtensionPoint):
             for arg in cargo_args
         ):
             cmd += ['--profile', 'dev']
-        logger.info(f"Build command: {cmd} and arguments: {cargo_args}")
+        logger.info(f'Build command: {cmd} and arguments: {cargo_args}')
         return cmd + cargo_args
 
     # Overridden by colcon-ros-cargo
